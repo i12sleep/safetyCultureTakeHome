@@ -152,7 +152,12 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			f := folder.NewDriver(tt.folders)
-			get := f.GetAllChildFolders(tt.OrgId, tt.folderName)
+			get, error := f.GetAllChildFolders(tt.OrgId, tt.folderName)
+
+			if (error != nil) != tt.wantErr {
+				t.Errorf("got error %v, wantErr %v", error, tt.wantErr)
+				return
+			}
 
 			if len(get) != len(tt.want) {
 				t.Errorf("got %d child folders, want %d", len(get), len(tt.want))
